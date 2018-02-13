@@ -8,13 +8,7 @@ ARM x86 Assembly
 Raspberry Pi
 
 ## Contributing
-
-Muhannad Nouri
-
-Zachary Aries
-
-## License
-
-No license yet
+  - Zachary Aries
+  - Muhannad Nouri
 
 
