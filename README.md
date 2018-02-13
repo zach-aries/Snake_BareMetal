@@ -7,7 +7,7 @@ This is a retro snake game developed specifically to run on the Raspberry Pi wit
   - Raspberry Pi
 
 ## My Contributions
-My contributions to this project is the gameController.s file
+My contributions to this project is the [gameController.s](https://github.com/zach-aries/Snake_BareMetal/blob/master/retro-snake/snake/source/gameController.s) file and [assets folder](https://github.com/zach-aries/Snake_BareMetal/tree/master/retro-snake/assets).
 
 ## Contributing
   - Zachary Aries
