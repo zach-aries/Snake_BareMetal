@@ -1,0 +1,228 @@
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/jtag.o
+LOAD build/snesContoller.o
+LOAD build/FrameBufferPixel.o
+LOAD build/draw.o
+LOAD build/assets.o
+LOAD build/menu.o
+LOAD build/main.o
+LOAD build/gameController.o
+
+.init           0x00008000        0x4
+ *(.init)
+ .init          0x00008000        0x0 build/draw.o
+ .init          0x00008000        0x0 build/menu.o
+ .init          0x00008000        0x4 build/main.o
+                0x00008000                _start
+ .init          0x00008004        0x0 build/gameController.o
+
+.data           0x00009080     0x6110
+ *(.data)
+ .data          0x00009080        0x0 build/jtag.o
+ .data          0x00009080        0x0 build/snesContoller.o
+ .data          0x00009080       0x30 build/FrameBufferPixel.o
+                0x00009080                FrameBufferInfo
+                0x000090a8                FrameBufferPointer
+                0x000090ac                FrameBufferPointerTemp
+ .data          0x000090b0       0x10 build/draw.o
+                0x000090b0                ImageBuffer
+ .data          0x000090c0     0x2600 build/assets.o
+                0x000090c0                ClockBuffer
+                0x000092c0                HoleBuffer
+                0x000094c0                RockBuffer
+                0x000096c0                BrickBuffer
+                0x000098c0                AppleBuffer
+                0x00009ac0                body_h
+                0x00009cc0                body_v
+                0x00009ec0                curve_e
+                0x0000a0c0                curve_n
+                0x0000a2c0                curve_s
+                0x0000a4c0                curve_w
+                0x0000a6c0                head_e
+                0x0000a8c0                head_n
+                0x0000aac0                head_s
+                0x0000acc0                head_w
+                0x0000aec0                tail_e
+                0x0000b0c0                tail_n
+                0x0000b2c0                tail_s
+                0x0000b4c0                tail_w
+ .data          0x0000b6c0      0x8a0 build/menu.o
+                0x0000bec0                fmt_Credit
+                0x0000beeb                fmt_StartGame
+                0x0000bef6                fmt_QuitGame
+                0x0000bf00                fmt_GameTitle
+                0x0000bf06                fmt_Title
+                0x0000bf1e                fmt_Pointer
+                0x0000bf21                fmt_RestartGame
+                0x0000bf2e                fmt_Quit
+                0x0000bf33                fmt_Score
+                0x0000bf3b                fmt_Lives
+                0x0000bf43                fmt_GameLost
+                0x0000bf4d                fmt_GameWon
+ .data          0x0000bf60        0x0 build/main.o
+ .data          0x0000bf60     0x3230 build/gameController.o
+                0x0000bf70                lives
+                0x0000c180                GridBuffer
+ *.c.o(*)
+
+.igot.plt       0x0000f190        0x0
+ .igot.plt      0x00000000        0x0 build/jtag.o
+
+.text           0x0000f190     0x1934
+ *.c.o(.text)
+ *(.text)
+ .text          0x0000f190       0x8c build/jtag.o
+                0x0000f190                EnableJTAG
+ .text          0x0000f21c      0x264 build/snesContoller.o
+                0x0000f21c                snesController
+                0x0000f22c                event_buttonPressed
+                0x0000f240                buttonPressed
+ .text          0x0000f480       0xb8 build/FrameBufferPixel.o
+                0x0000f480                InitFrameBuffer
+                0x0000f4c8                MailboxWrite
+                0x0000f4f8                MailboxRead
+ .text          0x0000f538      0x65c build/draw.o
+                0x0000f538                drawSnakeCurve
+                0x0000f594                drawSnakeBody
+                0x0000f5f0                drawSnakeHead
+                0x0000f64c                drawSnakeTail
+                0x0000f6a8                drawClock
+                0x0000f6d8                drawHole
+                0x0000f708                drawApple
+                0x0000f738                drawRock
+                0x0000f768                drawBrick
+                0x0000f790                initImageBuffer
+                0x0000f7b0                drawImage
+                0x0000f81c                drawBorder
+                0x0000f8f4                clearUnit
+                0x0000f964                drawColouredUnit
+                0x0000f9c8                drawBackground
+                0x0000fa24                drawBackground2
+                0x0000faac                drawBackground3
+                0x0000fb08                DrawPixel
+ .text          0x0000fb94        0x0 build/assets.o
+ .text          0x0000fb94      0x5e8 build/menu.o
+                0x0000fb94                init_MainMenu
+                0x0000fcc0                init_InGameMenu
+                0x0000fdc4                init_WonGameMenu
+                0x0000fe24                init_LostGameMenu
+                0x0000fe84                drawText
+                0x0000fed0                drawNumber
+                0x0000ff30                drawChar
+                0x0000ff90                init_GPIO
+                0x00010078                Read_SNES
+ .text          0x0001017c       0x20 build/main.o
+                0x00010194                haltLoop
+ .text          0x0001019c      0x928 build/gameController.o
+                0x0001019c                gameController
+                0x000102ac                getScore
+                0x00010348                gameFunction
+                0x00010394                clearGrid
+                0x000103c4                resetGame
+                0x00010430                initGame
+                0x0001048c                initSnake
+                0x000104d4                getGridState
+                0x00010504                setGridState
+                0x00010610                divide
+                0x00010a14                addSnake
+OUTPUT(build/output.elf elf32-littlearm)
+
+.glue_7         0x00010ac4        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x00010ac4        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x00010ac4        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x00010ac4        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x00010ac4        0x0
+ .iplt          0x00000000        0x0 build/jtag.o
+
+.rel.dyn        0x00010ac4        0x0
+ .rel.iplt      0x00000000        0x0 build/jtag.o
+
+.bss            0x00010ac4        0x0
+ .bss           0x00010ac4        0x0 build/jtag.o
+ .bss           0x00010ac4        0x0 build/snesContoller.o
+ .bss           0x00010ac4        0x0 build/FrameBufferPixel.o
+ .bss           0x00010ac4        0x0 build/draw.o
+ .bss           0x00010ac4        0x0 build/assets.o
+ .bss           0x00010ac4        0x0 build/menu.o
+ .bss           0x00010ac4        0x0 build/main.o
+ .bss           0x00010ac4        0x0 build/gameController.o
+
+.ARM.attributes
+                0x00000000       0x26
+ .ARM.attributes
+                0x00000000       0x26 build/jtag.o
+ .ARM.attributes
+                0x00000026       0x26 build/snesContoller.o
+ .ARM.attributes
+                0x0000004c       0x26 build/FrameBufferPixel.o
+ .ARM.attributes
+                0x00000072       0x26 build/draw.o
+ .ARM.attributes
+                0x00000098       0x26 build/assets.o
+ .ARM.attributes
+                0x000000be       0x26 build/menu.o
+ .ARM.attributes
+                0x000000e4       0x26 build/main.o
+ .ARM.attributes
+                0x0000010a       0x26 build/gameController.o
+
+.debug_line     0x00000000      0x906
+ .debug_line    0x00000000       0x61 build/jtag.o
+ .debug_line    0x00000061       0xf5 build/snesContoller.o
+ .debug_line    0x00000156       0x81 build/FrameBufferPixel.o
+ .debug_line    0x000001d7      0x220 build/draw.o
+ .debug_line    0x000003f7      0x1e2 build/menu.o
+ .debug_line    0x000005d9       0x53 build/main.o
+ .debug_line    0x0000062c      0x2da build/gameController.o
+
+.debug_info     0x00000000      0x341
+ .debug_info    0x00000000       0x6a build/jtag.o
+ .debug_info    0x0000006a       0x77 build/snesContoller.o
+ .debug_info    0x000000e1       0x82 build/FrameBufferPixel.o
+ .debug_info    0x00000163       0x76 build/draw.o
+ .debug_info    0x000001d9       0x76 build/menu.o
+ .debug_info    0x0000024f       0x72 build/main.o
+ .debug_info    0x000002c1       0x80 build/gameController.o
+
+.debug_abbrev   0x00000000       0x8a
+ .debug_abbrev  0x00000000       0x14 build/jtag.o
+ .debug_abbrev  0x00000014       0x14 build/snesContoller.o
+ .debug_abbrev  0x00000028       0x14 build/FrameBufferPixel.o
+ .debug_abbrev  0x0000003c       0x14 build/draw.o
+ .debug_abbrev  0x00000050       0x14 build/menu.o
+ .debug_abbrev  0x00000064       0x12 build/main.o
+ .debug_abbrev  0x00000076       0x14 build/gameController.o
+
+.debug_aranges  0x00000000       0xe8
+ .debug_aranges
+                0x00000000       0x20 build/jtag.o
+ .debug_aranges
+                0x00000020       0x20 build/snesContoller.o
+ .debug_aranges
+                0x00000040       0x20 build/FrameBufferPixel.o
+ .debug_aranges
+                0x00000060       0x20 build/draw.o
+ .debug_aranges
+                0x00000080       0x20 build/menu.o
+ .debug_aranges
+                0x000000a0       0x28 build/main.o
+ .debug_aranges
+                0x000000c8       0x20 build/gameController.o
+
+.debug_ranges   0x00000000       0x20
+ .debug_ranges  0x00000000       0x20 build/main.o
